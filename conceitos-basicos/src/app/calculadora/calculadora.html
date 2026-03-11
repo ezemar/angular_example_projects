@@ -1,0 +1,24 @@
+<div class="container">
+    <div class="form-box">
+        <form #frm="ngForm" (ngSubmit)="soma()">
+            <h2>Calculadora Angular</h2>
+            <label for="numero1">Numero 1</label>
+            <input type="number" name="numero1" id="numero1" (keydown)="resultado = 0" [(ngModel)]="numero1" />
+            
+            <label for="numero2">Numero 2</label>
+            <input type="number" name="numero2" id="numero2" (keydown)="resultado = 0" [(ngModel)]="numero2" />
+            
+            <button type="submit">Somar</button>
+
+        </form>
+
+            @if(resultado){    
+            <div class="result-display">
+                <p>Resultado: <span id="result">{{ resultado }}</span></p>
+            </div>
+            } @else {
+                <p>Insira os valores e clique em Somar</p>
+            }
+        
+    </div>
+</div>
