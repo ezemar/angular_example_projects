@@ -6,6 +6,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { Cliente } from './cliente';
+import { v4 as uuid } from 'uuid';
+import { ClienteService } from '../cliente';
 
 @Component({
   selector: 'app-cadastro',
@@ -15,29 +18,49 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class Cadastro {
 
-  cpf: string = "";
+  constructor(private service: ClienteService){
+    
+  }
+
+  cliente: Cliente = new Cliente;
+  clienteList: Cliente[] = [];
+
+  salvar(){
+    this.cliente.id = uuid();
+    this.clienteList.push(this.cliente);
+    console.log("cliente salvo. Agora temos esses clientes: ", this.clienteList);
+    this.limpar();    
+  }
+  
+  limpar(){
+    this.cliente = new Cliente;
+  }
 
   aplicarFormatacao(){
     
     let onlyValuesString: string = "";
     
-    if (this.cpf.length === 3){
-      this.cpf = this.cpf + ".";
+    if (this.cliente.cpf?.length === 3){
+      this.cliente.cpf = this.cliente.cpf + ".";
     }
     
-    if (this.cpf.length === 7){
-      this.cpf = this.cpf + ".";
+    if (this.cliente.cpf?.length === 7){
+      this.cliente.cpf = this.cliente.cpf + ".";
     }
 
-    if (this.cpf.length === 11){
-      this.cpf = this.cpf + "-";
+    if (this.cliente.cpf?.length === 11){
+      this.cliente.cpf = this.cliente.cpf + "-";
     }
 
-    //if (this.cpf.length > 14){
-    //  this.cpf = this.cpf.slice(0,14);
-    //  
-    //}
-    
+    }
+
+    existeNaLista(){
+      if (this.clienteList.includes(this.cliente)){
+        return true;
+      }
+      else{
+        return false;
+      }
     }
 
 }
