@@ -26,7 +26,7 @@
                         <div fxLayout="column" fxFlex="400px">
                             <mat-form-field class="full-width">
                                 <mat-label>CPF: *</mat-label>
-                                <input type="text" maxlength="14" name="cpf" [(ngModel)] = "cliente.cpf" (keyup)="aplicarFormatacao()" placeholder="somente numeros" matInput />
+                                <input type="text" maxlength="14" name="cpf" [(ngModel)] = "cliente.cpf" (keyup)="aplicarFormatacaoCpf()" placeholder="somente numeros" matInput />
                             </mat-form-field>
                         </div>
                     </div> 
@@ -34,7 +34,7 @@
                         <div fxLayout="column" fxFlex="400px">
                             <mat-form-field class="full-width">
                                 <mat-label>Data nascimento: *</mat-label>
-                                <input type="number" name="dataNascimento" [(ngModel)]="cliente.dataNascimento" placeholder="Ex: 01101991" matInput />
+                                <input type="text" maxlength="10" name="dataNascimento" [(ngModel)]="cliente.dataNascimento" (keyup)="aplicarFormatacaoData()" placeholder="somente numeros" matInput />
                             </mat-form-field>
                         </div>
                     </div> 
@@ -42,19 +42,19 @@
                 <mat-card-actions>
 
                     <div fxLayout="row">
-                            <button mat-flat-button color="primary" type="submit" (click)="salvar()">
+                            <button mat-flat-button color="primary" type="submit">
                                 <mat-icon fontIcon="save"></mat-icon>
                                 Salvar
                             </button>  
-                            <button mat-flat-button color="primary" class="ml-5">
+                            <button mat-flat-button color="primary" type="button" class="ml-5">
                                 <mat-icon fontIcon="refresh"></mat-icon>
                                 Atualizar
                             </button>      
                             
-                            <button mat-flat-button color="accent" class="ml-5" (click)="limpar()">
+                            <button mat-flat-button color="accent" type="button" class="ml-5" (click)="limpar()">
                                 <mat-icon fontIcon="backspace"></mat-icon>
-                                Limpar
-                            </button>      
+                                Limpar campos
+                            </button>  
                     </div>
 
                 </mat-card-actions>

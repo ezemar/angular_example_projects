@@ -18,50 +18,43 @@ import { ClienteService } from '../cliente';
 })
 export class Cadastro {
 
-  constructor(private service: ClienteService){
-    
-  }
+  //injeção de service aqui
+  constructor(private service: ClienteService){}
 
-  cliente: Cliente = new Cliente;
-  clienteList: Cliente[] = [];
-
+  cliente: Cliente = Cliente.newCliente();
+  
   salvar(){
-    this.cliente.id = uuid();
-    this.clienteList.push(this.cliente);
-    console.log("cliente salvo. Agora temos esses clientes: ", this.clienteList);
-    this.limpar();    
+    this.service.salvar(this.cliente);  
+    this.cliente = Cliente.newCliente(); 
   }
   
   limpar(){
-    this.cliente = new Cliente;
+    this.cliente = Cliente.newCliente();
   }
 
-  aplicarFormatacao(){
-    
-    let onlyValuesString: string = "";
-    
-    if (this.cliente.cpf?.length === 3){
-      this.cliente.cpf = this.cliente.cpf + ".";
-    }
-    
-    if (this.cliente.cpf?.length === 7){
-      this.cliente.cpf = this.cliente.cpf + ".";
-    }
+  limparLista(){
+    console.log("limpando a lista de clientes...");
+  }
 
+  aplicarFormatacaoCpf(){
+        
+    if (this.cliente.cpf?.length === 3 || this.cliente.cpf?.length === 7){
+      this.cliente.cpf = this.cliente.cpf + ".";
+    }
+    
     if (this.cliente.cpf?.length === 11){
       this.cliente.cpf = this.cliente.cpf + "-";
     }
 
-    }
+  }
 
-    existeNaLista(){
-      if (this.clienteList.includes(this.cliente)){
-        return true;
-      }
-      else{
-        return false;
-      }
+  aplicarFormatacaoData(){
+        
+    if (this.cliente.dataNascimento?.length == 2 || this.cliente.dataNascimento?.length === 5){
+      this.cliente.dataNascimento = this.cliente.dataNascimento + "/";
     }
+    
+  }
 
 }
 
