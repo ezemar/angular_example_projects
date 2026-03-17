@@ -11,7 +11,7 @@ import { ClienteService } from '../cliente';
 import { Cliente } from '../cadastro/cliente';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
-import { ɵEmptyOutletComponent } from "@angular/router";
+import { Router, ɵEmptyOutletComponent } from "@angular/router";
 
 @Component({
   selector: 'app-consulta',
@@ -22,18 +22,30 @@ import { ɵEmptyOutletComponent } from "@angular/router";
 export class Consulta {
 
   clienteList: Cliente[] = [];
-  colunasTable: string[] = ["id", "nome", "email", "cpf", "dataNascimento"];
+  colunasTable: string[] = ["id", "nome", "email", "cpf", "dataNascimento", "acoes"];
   nomeBusca: string = "";
 
-  constructor(private service: ClienteService){}
+  constructor(
+    private service: ClienteService,
+    private router: Router
+  ){}
 
   ngOnInit(){
     this.clienteList = this.service.pesquisarCliente("");
-    console.log("passou por aqui");
   }
 
   pesquisar() {
     this.clienteList = this.service.pesquisarCliente(this.nomeBusca);
+  }
+
+  enviarId(id: string){
+    console.log("id recebido e enviado para o formulario de edição", id);
+    this.router.navigate(['cadastro'], { queryParams: { "id": id } });
+  }
+
+  deletar(cliente: Cliente){
+    console.log("apagando cliente", cliente);
+    this.service.deletar(cliente);
   }
 
 }

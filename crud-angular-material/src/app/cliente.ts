@@ -7,21 +7,57 @@ import { Cliente } from './cadastro/cliente';
 export class ClienteService {
 
   static REPO_CLIENTES = "_CLIENTES";
-
   constructor(){}
 
-  salvar(cliente: Cliente){
+  camposVazios(cliente: Cliente) {
+
+    if (cliente.nome.length === 0 || cliente.email.length === 0 || cliente.cpf.length === 0 || cliente.dataNascimento.length === 0){
+      return true;
+    }
+    return false;
+
+  }
+
+  atualizar(cliente: Cliente){
+  
+    const storage = this.obterStorage();
+    
+    storage.forEach(clienteNoStorage => { 
+      if (clienteNoStorage.id === cliente.id){
+        Object.assign(clienteNoStorage, cliente);
+      }
+
+      });
+
+      localStorage.setItem(ClienteService.REPO_CLIENTES, JSON.stringify(storage));
+
+  }
+
+  salvar(cliente: Cliente) {
 
     const storage = this.obterStorage();
+  
+    if (!this.jaExiste(cliente)){
 
-    cliente.nome = cliente.nome?.toLowerCase();
-    cliente.email = cliente.email?.toLowerCase();
+        storage.push(cliente);
+        localStorage.setItem(ClienteService.REPO_CLIENTES, JSON.stringify(storage));
+        console.log("cliente salvo ->", cliente);
+        
+      }
+
+  }
+
+  jaExiste(cliente: Cliente){
     
-    storage.push(cliente);
+    if ( this.pesquisarClientePorCpf(cliente.cpf).length > 0) {
+      return true;
+    } 
+    
+    if (this.pesquisarClientePorEmail(cliente.email).length > 0 ){
+      return true;
+    }
 
-    localStorage.setItem(ClienteService.REPO_CLIENTES, JSON.stringify(storage));
-
-    console.log("cliente salvo ->", cliente);
+    return false;
   
   }
 
@@ -33,7 +69,44 @@ export class ClienteService {
       return clienteList;
     }
 
-    return clienteList.filter(cliente => cliente.nome?.indexOf(nome) !== -1 );
+    return clienteList.filter(cliente => cliente.nome.indexOf(nome) !== -1 );
+
+  }
+
+  limparLocalStorage(){
+    const clienteLista: Cliente[] = [];
+    localStorage.setItem(ClienteService.REPO_CLIENTES, JSON.stringify(clienteLista));
+  }
+
+  pesquisarClientePorCpf(cpf: string) : Cliente[]{
+
+    const clienteList = this.obterStorage();
+
+    if (!cpf){
+      return clienteList;
+    }
+
+    return clienteList.filter(cliente => cliente.cpf.indexOf(cpf) !== -1 );
+
+  }
+
+  pesquisarClientePorId(id: string) : Cliente | undefined {
+
+    const clienteList = this.obterStorage();
+    
+    return clienteList.find(cliente => cliente.id === id );
+
+  }
+
+  pesquisarClientePorEmail(email: string) : Cliente[]{
+
+    const clienteList = this.obterStorage();
+
+    if (!email){
+      return clienteList;
+    }
+
+    return clienteList.filter(cliente => cliente.email.indexOf(email) !== -1 );
 
   }
 

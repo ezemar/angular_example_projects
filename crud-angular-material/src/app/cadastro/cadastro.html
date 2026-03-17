@@ -10,7 +10,7 @@
                         <div fxLayout="column" fxFlex="800px">
                             <mat-form-field class="full-width">
                                 <mat-label>Nome: *</mat-label>
-                                <input type="text" name="nome" [(ngModel)]="cliente.nome" placeholder="Ex: Marilu Cavalieri" matInput />
+                                <input type="text" name="nome" [(ngModel)]="cliente.nome" (input)="formatarNome()" placeholder="Ex: Marilu Cavalieri" matInput />
                             </mat-form-field>
                         </div>
                     </div>
@@ -18,7 +18,7 @@
                         <div fxLayout="column" fxFlex="800px">
                             <mat-form-field class="full-width">
                                 <mat-label>Email: *</mat-label>
-                                <input type="email" name="email" [(ngModel)] = "cliente.email" placeholder="Ex: pirulito@gostoso.com.br" matInput />
+                                <input type="email" name="email" [(ngModel)] = "cliente.email" (input)="autocompletarEmail()" placeholder="Ex: pirulito@gostoso.com.br" matInput />
                             </mat-form-field>
                         </div>
                     </div> 
@@ -26,7 +26,7 @@
                         <div fxLayout="column" fxFlex="400px">
                             <mat-form-field class="full-width">
                                 <mat-label>CPF: *</mat-label>
-                                <input type="text" maxlength="14" name="cpf" [(ngModel)] = "cliente.cpf" (keyup)="aplicarFormatacaoCpf()" placeholder="somente numeros" matInput />
+                                <input type="text" maxlength="14" name="cpf" [(ngModel)] = "cliente.cpf" (input)="aplicarFormatacaoCpf()" placeholder="somente numeros" matInput />
                             </mat-form-field>
                         </div>
                     </div> 
@@ -34,7 +34,7 @@
                         <div fxLayout="column" fxFlex="400px">
                             <mat-form-field class="full-width">
                                 <mat-label>Data nascimento: *</mat-label>
-                                <input type="text" maxlength="10" name="dataNascimento" [(ngModel)]="cliente.dataNascimento" (keyup)="aplicarFormatacaoData()" placeholder="somente numeros" matInput />
+                                <input type="text" maxlength="10" name="dataNascimento" [(ngModel)]="cliente.dataNascimento" (input)="aplicarFormatacaoData()" placeholder="somente numeros" matInput />
                             </mat-form-field>
                         </div>
                     </div> 
@@ -42,22 +42,33 @@
                 <mat-card-actions>
 
                     <div fxLayout="row">
+                            @if (!atualizando){
                             <button mat-flat-button color="primary" type="submit">
                                 <mat-icon fontIcon="save"></mat-icon>
                                 Salvar
                             </button>  
-                            <button mat-flat-button color="primary" type="button" class="ml-5">
+                            }
+                            @else{      
+                            <button mat-flat-button color="primary" type="submit" class="ml-5">
                                 <mat-icon fontIcon="refresh"></mat-icon>
                                 Atualizar
                             </button>      
-                            
+                            }
                             <button mat-flat-button color="accent" type="button" class="ml-5" (click)="limpar()">
                                 <mat-icon fontIcon="backspace"></mat-icon>
                                 Limpar campos
                             </button>  
+
+                            <button mat-flat-button color="accent" type="button" class="ml-5" (click)="limparLocalStorage()">
+                                <mat-icon fontIcon="delete"></mat-icon>
+                                Limpar Local Storage
+                            </button>  
                     </div>
 
                 </mat-card-actions>
+
+                <div>
+                </div>
             </mat-card>
          </form>
     </div>
